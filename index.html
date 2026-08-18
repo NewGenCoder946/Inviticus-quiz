@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INVICTUS — Ultimate Challenge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Orbitron:wght@500;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+:root{--bg:#09051c;--card:#15102f;--text:#f8f7ff;--muted:#bcb6d9;--pink:#ff3cac;--cyan:#20e3ff;--purple:#8b5cf6;--yellow:#ffe45e;--green:#39f5a5}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font-family:Poppins,sans-serif;background:radial-gradient(circle at 10% 10%,#4c116d 0,transparent 30%),radial-gradient(circle at 90% 15%,#003f61 0,transparent 28%),linear-gradient(135deg,#08041a,#16062d 45%,#061d32);overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;width:280px;height:280px;border-radius:50%;filter:blur(70px);opacity:.45;z-index:-1;animation:float 8s ease-in-out infinite}
+body:before{background:#ff1493;top:5%;left:-80px}
+body:after{background:#00e5ff;right:-80px;bottom:5%;animation-delay:2s}
+@keyframes float{50%{transform:translate(35px,-30px) scale(1.12)}}
+.wrap{width:min(940px,94%);margin:auto;padding:24px 0 50px}
+.hero{text-align:center;padding:20px 0 12px}
+.logo{font-family:Orbitron,sans-serif;font-size:clamp(42px,12vw,86px);font-weight:800;letter-spacing:8px;background:linear-gradient(90deg,#ff3cac,#ffe45e,#20e3ff,#8b5cf6,#ff3cac);background-size:300%;-webkit-background-clip:text;color:transparent;animation:rainbow 4s linear infinite,glow 2s ease-in-out infinite alternate}
+@keyframes rainbow{to{background-position:300%}}
+@keyframes glow{from{filter:drop-shadow(0 0 4px #ff3cac)}to{filter:drop-shadow(0 0 20px #20e3ff)}}
+.tag{color:#ddd6fe;letter-spacing:4px;font-size:12px;font-weight:700}
+.card{background:linear-gradient(145deg,#191235ee,#0d1731ee);border:1px solid #ffffff1c;border-radius:26px;padding:26px;box-shadow:0 20px 70px #0007;backdrop-filter:blur(14px)}
+.hidden{display:none!important}
+input{width:100%;padding:15px 16px;border-radius:13px;border:1px solid #ffffff24;background:#08051b;color:white;font:inherit;outline:none}
+input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #20e3ff22}
+button{border:0;border-radius:14px;padding:13px 20px;color:white;background:linear-gradient(90deg,#ff1493,#8b5cf6,#00cfff);font-weight:800;font-family:Poppins;cursor:pointer;box-shadow:0 8px 25px #0005;transition:.2s}
+button:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.12)}
+button.secondary{background:#ffffff12;border:1px solid #ffffff25}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.pill{padding:8px 12px;border-radius:999px;background:#ffffff0d;border:1px solid #ffffff1b;color:#e9e4ff;font-size:12px}
+.progress{height:10px;background:#ffffff10;border-radius:20px;overflow:hidden;margin:12px 0 24px}
+.progress i{display:block;height:100%;width:1%;background:linear-gradient(90deg,#ff3cac,#ffe45e,#20e3ff);border-radius:20px;transition:.5s}
+.qnum{font-family:Orbitron;color:var(--cyan);font-size:13px;letter-spacing:2px}
+.question{font-family:'Luckiest Guy',cursive;font-size:clamp(20px,3.6vw,29px);line-height:1.5;letter-spacing:.5px;margin:9px 0 25px;font-weight:400}
+.options{display:grid;gap:12px}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:17px;border-radius:16px;border:1px solid #ffffff16;background:#ffffff08;cursor:pointer;transition:.2s;font-family:'Luckiest Guy',cursive;letter-spacing:.4px}
+.opt:hover{border-color:#20e3ff99;background:#20e3ff12;transform:translateX(4px)}
+.opt.selected{border-color:#ff3cac;background:linear-gradient(90deg,#ff3cac18,#8b5cf618)}
+.letter{min-width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:linear-gradient(135deg,#ff3cac,#8b5cf6);font-weight:800}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.resultTitle{font-family:Orbitron;font-size:clamp(28px,7vw,52px);background:linear-gradient(90deg,#ffe45e,#ff3cac,#20e3ff);-webkit-background-clip:text;color:transparent}
+.bigScore{font-size:70px;font-weight:800;text-align:center;font-family:Orbitron}
+.chart{margin:25px 0;display:grid;gap:15px}
+.barRow{display:grid;grid-template-columns:105px 1fr 60px;align-items:center;gap:10px;font-size:13px}
+.bar{height:28px;border-radius:10px;background:#ffffff0c;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff3cac,#ffe45e,#20e3ff);border-radius:10px;animation:grow 1.2s forwards}
+.barRow:nth-child(2) span{background:linear-gradient(90deg,#20e3ff,#8b5cf6)}
+.barRow:nth-child(3) span{background:linear-gradient(90deg,#39f5a5,#20e3ff)}
+.barRow:nth-child(4) span{background:linear-gradient(90deg,#ffe45e,#ff3cac)}
+.barRow:nth-child(5) span{background:linear-gradient(90deg,#8b5cf6,#ff3cac)}
+@keyframes grow{to{width:var(--w)}}
+.resultBtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+small{color:var(--muted)}
+.lbTable{display:grid;gap:10px;margin:20px 0}
+.lbRow{display:grid;grid-template-columns:44px 1fr auto auto;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:#ffffff08;border:1px solid #ffffff16}
+.lbRow.me{border-color:var(--cyan);background:#20e3ff14}
+.lbRank{font-family:Orbitron;font-weight:800;font-size:16px;color:var(--muted);text-align:center}
+.lbRow:nth-child(1) .lbRank{color:#ffe45e}
+.lbRow:nth-child(2) .lbRank{color:#d7dbe6}
+.lbRow:nth-child(3) .lbRank{color:#e0a26a}
+.lbName{font-weight:700}
+.lbDate{color:var(--muted);font-size:12px;display:block;font-weight:400}
+.lbPct{font-family:Orbitron;font-weight:800;color:var(--green);font-size:17px}
+.lbScore{color:var(--muted);font-size:12px;text-align:right}
+.lbEmpty{color:var(--muted);text-align:center;padding:20px}
+.monRow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:16px;border-radius:16px;background:#ffffff08;border:1px solid #ffffff16;margin-bottom:12px}
+.monRow.idle{border-color:#ff3cac55;background:#ff3cac0c}
+.monRow.completed{border-color:#39f5a555;background:#39f5a50c}
+.monName{font-weight:700;font-size:15px}
+.monMeta{color:var(--muted);font-size:12px;margin-top:2px}
+.monBar{height:8px;background:#ffffff10;border-radius:20px;overflow:hidden;margin-top:8px}
+.monBar span{display:block;height:100%;background:linear-gradient(90deg,#ff3cac,#20e3ff);border-radius:20px}
+.monBadge{padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;white-space:nowrap;height:fit-content}
+.monBadge.live{background:#20e3ff22;color:var(--cyan)}
+.monBadge.idle{background:#ff3cac22;color:var(--pink)}
+.monBadge.completed{background:#39f5a522;color:var(--green)}
+.monWarn{color:var(--yellow);font-size:12px;margin-bottom:14px}
+.prodigyToast{position:fixed;bottom:22px;right:22px;left:auto;max-width:300px;background:linear-gradient(145deg,#191235f2,#0d1731f2);border:1px solid #ffffff2c;border-radius:20px;padding:16px 40px 16px 18px;box-shadow:0 14px 45px #0009;backdrop-filter:blur(14px);z-index:999;animation:toastIn .5s ease forwards;font-size:13.5px;line-height:1.55;color:var(--text)}
+@keyframes toastIn{from{opacity:0;transform:translateY(24px) scale(.92)}to{opacity:1;transform:none}}
+.prodigyToast b{display:block;margin-bottom:5px;font-family:Orbitron;color:var(--cyan);font-size:11px;letter-spacing:1.5px}
+.prodigyToast .toastClose{position:absolute;top:10px;right:14px;cursor:pointer;color:var(--muted);font-size:16px;line-height:1}
+@media(max-width:520px){.prodigyToast{left:16px;right:16px;bottom:16px;max-width:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><div class="logo">INVICTUS</div><div class="tag">ULTIMATE ACADEMIC CHALLENGE</div></header>
+
+<section id="start" class="card">
+<h2>Ready to enter the arena?</h2>
+<p>100 questions. One question at a time. No scrolling through the entire exam.</p>
+<p><b>Difficulty:</b> Advanced / tricky &nbsp; • &nbsp; <b>Subjects:</b> Biology, Chemistry, Physics, Mathematics, English</p>
+<label>Candidate name</label>
+<input id="candidate" placeholder="Enter your name">
+<br><br>
+<button onclick="begin()">ENTER THE CHALLENGE ⚡</button>
+</section>
+
+<section id="leaderboard" class="card hidden">
+<h2>🏆 Leaderboard</h2>
+<p style="color:var(--muted)">Top candidates, ranked by overall score.</p>
+<div class="lbTable" id="lbTable"></div>
+<div class="resultBtns"><button class="secondary" onclick="backToStart()">← Back</button></div>
+</section>
+
+<section id="quiz" class="card hidden">
+<div class="meta">
+<span class="pill" id="subject"></span>
+<span class="pill" id="counter"></span>
+<span class="pill" id="timer">00:00</span>
+</div>
+<div class="progress"><i id="prog"></i></div>
+<div class="qnum" id="qnum"></div>
+<div class="question" id="question"></div>
+<div class="options" id="options"></div>
+<div class="nav">
+<button class="secondary" id="prev" onclick="previous()">← Previous</button>
+<button id="next" onclick="next()">Next →</button>
+</div>
+</section>
+
+<section id="result" class="card hidden">
+<div class="resultTitle">CHALLENGE COMPLETE</div>
+<p id="resultName"></p>
+<div class="bigScore" id="bigScore">0%</div>
+<p id="resultSummary" style="text-align:center;color:var(--muted)"></p>
+<div class="chart" id="chart"></div>
+<div class="resultBtns">
+<button onclick="showLeaderboard()">🏆 Leaderboard</button>
+<button class="secondary" onclick="backToStart()">↺ New Attempt</button>
+</div>
+</section>
+
+<section id="admin" class="card hidden">
+<h2>🛡️ Admin Dashboard</h2>
+<div id="adminLogin">
+<p style="color:var(--muted)">Admin access</p>
+<input id="adminEmail" type="email" placeholder="Admin email">
+<br><br>
+<input id="adminPassword" type="password" placeholder="Password">
+<br><br>
+<button onclick="adminLogin()">ADMIN LOGIN</button>
+</div>
+
+<div id="adminPanel" class="hidden">
+<div class="meta">
+<span class="pill" id="adminStatus">Connected</span>
+<button class="secondary" onclick="adminLogout()">Log out</button>
+</div>
+
+<h3>Live Monitor</h3>
+<div id="monitor"></div>
+
+<h3>Leaderboard</h3>
+<div class="lbTable" id="adminLeaderboard"></div>
+
+<div class="resultBtns">
+<button class="secondary" onclick="backToStart()">← Back</button>
+</div>
+</div>
+</section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_PUBLISHABLE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let currentUser=null,currentAttemptId=null,adminSession=false;
+
+const raw = [
+  ["Biology", "A patient has persistently high blood glucose despite adequate insulin production. Which finding would most strongly suggest insulin resistance rather than absolute insulin deficiency?", "A", "Target cells respond poorly to insulin despite its presence", "B", "The pancreas cannot synthesize any glucagon", "C", "Red blood cells stop carrying oxygen", "D", "ADH secretion becomes permanently absent", "A", "Insulin resistance concerns reduced cellular response to insulin even when insulin is present.", "B", "Glucagon synthesis is not the defining distinction between insulin resistance and insulin deficiency.", "C", "Oxygen transport by red blood cells does not establish insulin resistance.", "D", "ADH is involved mainly in water balance, not the defining mechanism here."],
+["Biology", "A drug blocks ADH receptors in the collecting ducts while leaving ADH secretion normal. What is the most direct consequence?", "A", "Reduced water reabsorption and more dilute urine", "B", "Increased glucose reabsorption in the proximal tubule", "C", "Increased bile secretion into the duodenum", "D", "Reduced oxygen binding by haemoglobin", "A", "Blocking ADH receptors reduces the collecting duct's response, decreasing water reabsorption.", "B", "Glucose reabsorption is not the primary direct target of ADH receptors.", "C", "Bile secretion is unrelated to ADH receptor action.", "D", "Haemoglobin oxygen binding is not directly controlled by ADH receptors."],
+["Biology", "A patient has a blockage preventing bile from reaching the duodenum, while pancreatic lipase secretion remains normal. Which process is most immediately impaired?", "A", "Emulsification of dietary fats", "B", "Hydrolysis of starch by salivary amylase", "C", "Absorption of amino acids through villi", "D", "Transport of oxygen by haemoglobin", "A", "Bile salts emulsify large fat droplets, increasing the surface area available to lipase.", "B", "Salivary amylase acts before food reaches the duodenum.", "C", "Amino-acid absorption can occur without bile emulsification being its direct mechanism.", "D", "Haemoglobin transport is unrelated to bile."],
+["Biology", "Why does the small intestine have numerous villi and microvilli rather than a smooth lining?", "A", "To greatly increase surface area for absorption", "B", "To prevent all water from entering the intestine", "C", "To produce red blood cells", "D", "To prevent enzymes from contacting food", "A", "Villi and microvilli greatly increase epithelial surface area for nutrient absorption.", "B", "The intestine does not prevent all water movement.", "C", "Red blood cells are not produced by intestinal villi.", "D", "Digestive enzymes must contact food for digestion to occur."],
+["Biology", "A red blood cell leaves the left ventricle and eventually returns to the right atrium. Which sequence is correct?", "A", "Aorta → body tissues → venae cavae", "B", "Pulmonary artery → lungs → pulmonary vein", "C", "Vena cava → lungs → aorta", "D", "Aorta → lungs → pulmonary artery", "A", "Systemic circulation begins at the left ventricle through the aorta and returns through the venae cavae.", "B", "That sequence describes pulmonary circulation and starts from the right ventricle.", "C", "The vena cava returns blood to the heart rather than carrying it from the left ventricle.", "D", "The aorta does not directly carry systemic blood to the lungs."],
+["Biology", "A person has a mutation in the gene coding for a membrane receptor. Which result is most directly possible even if the hormone itself is produced normally?", "A", "The target cell may fail to respond appropriately", "B", "Every cell in the body must stop dividing", "C", "All hormones must become proteins", "D", "The person's chromosome number must double", "A", "A defective receptor can prevent normal signal transduction even when the hormone is present.", "B", "A receptor mutation does not imply universal cessation of cell division.", "C", "Hormone chemical classes are not all determined by one receptor gene.", "D", "A receptor mutation does not inherently double chromosome number."],
+["Biology", "In a monohybrid cross Aa × Aa, what fraction of offspring is expected to be homozygous?", "A", "1/4", "B", "1/2", "C", "3/4", "D", "1", "A", "The possible genotypes are AA, Aa, Aa and aa, so two of four are homozygous: 1/2.", "B", "1/2 is the heterozygous fraction, not the homozygous fraction.", "C", "3/4 is the usual dominant-phenotype fraction under complete dominance.", "D", "Only two of the four genotype outcomes are homozygous."],
+["Biology", "Which pair correctly matches a cranial nerve with its principal function?", "A", "Olfactory — smell", "B", "Optic — hearing", "C", "Vagus — vision", "D", "Facial — balance", "A", "Cranial nerve I, the olfactory nerve, carries information for smell.", "B", "The optic nerve is associated with vision, not hearing.", "C", "The vagus nerve has broad visceral functions rather than being the principal visual nerve.", "D", "Balance is primarily associated with vestibular pathways involving cranial nerve VIII."],
+["Biology", "Damage to the vagus nerve could directly affect parasympathetic control of which organs?", "A", "Heart and digestive tract", "B", "Only the retina", "C", "Only skeletal muscle fibres", "D", "Only the epidermis", "A", "The vagus nerve supplies major parasympathetic pathways to the heart and much of the digestive tract.", "B", "The retina is not its principal parasympathetic target.", "C", "Skeletal muscle is controlled mainly by somatic motor pathways.", "D", "The epidermis is not the defining target of the vagus nerve."],
+["Biology", "A patient has a rapid withdrawal reflex before consciously perceiving the painful stimulus. Why can the response occur so quickly?", "A", "The initial integration can occur through spinal cord circuits", "B", "The endocrine system sends a hormone to the muscle first", "C", "The cerebrum must complete a detailed conscious analysis before movement", "D", "The response requires digestion to begin", "A", "Spinal reflex circuits can process the initial response rapidly before conscious perception is completed.", "B", "Hormonal signalling is generally too slow to explain the immediate reflex.", "C", "Conscious cerebral processing is not required to initiate the basic withdrawal reflex.", "D", "Digestion is unrelated to the reflex arc."],
+
+["Chemistry", "Why does hydrogen usually form H₂ rather than remaining as isolated hydrogen atoms under ordinary conditions?", "A", "Two hydrogen atoms share electrons to achieve a more stable arrangement", "B", "Hydrogen atoms contain no electrons", "C", "Hydrogen is naturally a metal at room temperature", "D", "H₂ is an ionic lattice", "A", "The H₂ molecule contains a covalent bond formed by sharing electrons.", "B", "Hydrogen atoms each contain one electron.", "C", "Hydrogen is a non-metal under ordinary conditions.", "D", "H₂ is a covalent molecular substance, not an ionic lattice."],
+["Chemistry", "When propene reacts with bromine, which structural change best describes the reaction?", "A", "The C=C bond is converted into two C–Br/C–C single-bond connections across the former double bond", "B", "The carbon skeleton is completely oxidised to CO₂", "C", "A benzene ring is formed immediately", "D", "The alkene loses both carbon atoms", "A", "Bromine adds across the alkene double bond, giving a vicinal dibromo product.", "B", "Bromine addition is not complete combustion.", "C", "A benzene ring is not produced by this simple addition.", "D", "The carbon skeleton remains intact during the addition."],
+["Chemistry", "Why is hydrogenation of an alkene classified as an addition reaction?", "A", "Atoms are added across the C=C bond without removing the carbon framework", "B", "A water molecule is always eliminated", "C", "The molecule is split into two smaller hydrocarbons", "D", "The carbon chain is replaced by a benzene ring", "A", "Hydrogen atoms add across the double bond and the carbon framework is retained.", "B", "Elimination is the opposite pattern and is not required for hydrogenation.", "C", "Hydrogenation does not split the alkene into two hydrocarbons.", "D", "Hydrogenation does not automatically form an aromatic ring."],
+["Chemistry", "Stearic acid and oleic acid have the same number of carbon atoms, but oleic acid is unsaturated. What structural feature accounts for this?", "A", "Oleic acid contains one C=C bond in its hydrocarbon chain", "B", "Oleic acid has no carboxyl group", "C", "Stearic acid contains a benzene ring", "D", "Oleic acid contains a carbon-carbon triple bond", "A", "Oleic acid is a monounsaturated fatty acid with one carbon-carbon double bond.", "B", "Oleic acid still contains the carboxyl group characteristic of fatty acids.", "C", "Stearic acid is a saturated fatty acid and does not contain a benzene ring.", "D", "Oleic acid's defining unsaturation is a double, not triple, bond."],
+["Chemistry", "Why can cis and trans isomers exist for an appropriate alkene but not freely interconvert by ordinary rotation about the C=C bond?", "A", "The π component of the double bond restricts rotation", "B", "The alkene contains only ionic bonds", "C", "Single bonds rotate faster than light", "D", "The carbon atoms have no electrons", "A", "The double bond includes a π bond that prevents free rotation without breaking the bond.", "B", "The C=C bond is covalent rather than an ionic lattice.", "C", "Bond rotation is not described by that comparison.", "D", "Carbon atoms in alkenes do contain electrons."],
+["Chemistry", "Which statement best explains benzene's unusual stability compared with a hypothetical ring containing three isolated C=C bonds?", "A", "Its π electrons are delocalised over the ring", "B", "It contains no carbon-hydrogen bonds", "C", "All six carbon atoms are ions", "D", "It has only one carbon atom", "A", "Delocalisation of the π electrons stabilises the aromatic ring.", "B", "Benzene does contain carbon-hydrogen bonds.", "C", "Benzene is a covalent molecular substance rather than six isolated carbon ions.", "D", "Benzene contains six carbon atoms."],
+["Chemistry", "Benzene commonly undergoes electrophilic substitution rather than simple addition because substitution can:", "A", "Preserve the aromatic delocalised system", "B", "Remove every carbon atom from the ring", "C", "Turn benzene directly into hydrogen gas", "D", "Destroy all π electrons permanently", "A", "Electrophilic substitution replaces a hydrogen while retaining the aromatic stabilisation.", "B", "Carbon atoms remain in the aromatic ring.", "C", "Benzene reactions do not directly produce hydrogen gas in that manner.", "D", "The aromatic π system is restored after substitution."],
+["Chemistry", "Complete hydrogenation of benzene under suitable catalytic conditions produces:", "A", "Cyclohexane", "B", "Hexene", "C", "Ethyne", "D", "Phenol", "A", "Adding hydrogen to all three π bonds of benzene gives cyclohexane.", "B", "Hexene still contains a double bond, so hydrogenation is incomplete.", "C", "Ethyne has a completely different carbon skeleton and bonding pattern.", "D", "Phenol contains oxygen and is not the complete hydrogenation product."],
+["Chemistry", "Which observation most strongly distinguishes an alkene from an alkane in a simple laboratory test?", "A", "The alkene rapidly decolourises bromine water under the test conditions", "B", "Both substances always turn bromine water blue", "C", "The alkane forms a benzene ring immediately", "D", "The alkene cannot undergo any reaction with hydrogen", "A", "The C=C bond allows addition of bromine, commonly causing bromine water to lose its colour.", "B", "Bromine water is not blue because of this distinction.", "C", "Alkanes do not immediately cyclise into benzene under these conditions.", "D", "Alkenes can undergo hydrogenation."],
+["Chemistry", "In the electrolysis of molten lead(II) bromide using inert electrodes, at which electrode does bromine gas form, and why?", "A", "At the anode, because bromide ions are oxidised there, losing electrons", "B", "At the cathode, because bromide ions gain electrons there", "C", "At the anode, because lead ions are reduced there", "D", "At the cathode, because lead is deposited there as a gas", "A", "Anions migrate to the anode during electrolysis and are oxidised, losing electrons to form the element.", "B", "Bromide ions are oxidised, not reduced, so this does not occur at the cathode.", "C", "Lead ions are reduced at the cathode, not oxidised at the anode.", "D", "Lead is deposited as a solid metal at the cathode, not as a gas."],
+  ["Chemistry", "Which statement best explains why ionic compounds conduct electricity when molten but not when solid?", "A", "The ions are free to move when molten", "B", "The electrons disappear when the compound melts", "C", "The atoms become covalent when molten", "D", "The compound contains no charged particles when molten", "A", "When molten, the ions can move and carry charge through the substance.", "B", "The electrons do not disappear on melting.", "C", "Melting does not convert the ionic bonding into covalent bonding.", "D", "Molten ionic compounds contain mobile charged ions."],
+["Chemistry", "A reaction has ΔH = −250 kJ mol⁻¹. Which statement is correct?", "A", "The reaction releases 250 kJ mol⁻¹ to the surroundings", "B", "The reaction absorbs 250 kJ mol⁻¹ from the surroundings", "C", "The reaction has no energy change", "D", "The reaction must be non-spontaneous", "A", "A negative enthalpy change indicates an exothermic reaction that releases energy.", "B", "Energy is released rather than absorbed.", "C", "The enthalpy change is clearly non-zero.", "D", "Enthalpy change alone does not determine spontaneity."],
+["Chemistry", "Why does increasing temperature generally increase the rate of a chemical reaction?", "A", "A greater fraction of particles have enough energy to overcome activation energy", "B", "The activation energy becomes exactly zero", "C", "All collisions become successful", "D", "Particles stop moving randomly", "A", "Higher temperature increases the fraction of collisions with energy at or above the activation energy.", "B", "The activation energy of a given reaction is not simply reduced to zero by heating.", "C", "Not every collision becomes successful.", "D", "Particles continue moving randomly and generally move faster."],
+["Chemistry", "A catalyst speeds up a reaction because it:", "A", "Provides an alternative pathway with lower activation energy", "B", "Increases the enthalpy change of the reaction", "C", "Is permanently consumed as a reactant", "D", "Makes all products more energetic", "A", "Catalysts provide an alternative reaction pathway with lower activation energy.", "B", "A catalyst does not change the overall enthalpy change.", "C", "A catalyst is regenerated and is not permanently consumed.", "D", "Catalysis does not automatically increase product energy."],
+["Chemistry", "At dynamic equilibrium, which statement is true?", "A", "The forward and reverse reactions occur at equal rates", "B", "The reactants and products have equal concentrations", "C", "All reactions have stopped", "D", "Only the reverse reaction continues", "A", "Dynamic equilibrium means equal forward and reverse reaction rates.", "B", "Equal rates do not require equal concentrations.", "C", "Both reactions continue microscopically.", "D", "Both directions continue at equilibrium."],
+["Chemistry", "For an exothermic equilibrium, what is generally expected if temperature is increased?", "A", "The equilibrium shifts toward the endothermic direction", "B", "The equilibrium must always shift toward products", "C", "The equilibrium constant must become exactly one", "D", "No equilibrium change is possible", "A", "Increasing temperature favours the direction that absorbs heat.", "B", "The product direction may be exothermic or endothermic depending on the reaction.", "C", "The equilibrium constant is temperature-dependent but is not necessarily one.", "D", "Temperature can change the equilibrium position."],
+["Chemistry", "What is the pH of a neutral solution at 25°C?", "A", "7", "B", "0", "C", "14", "D", "1", "A", "At 25°C, neutral water has equal H⁺ and OH⁻ concentrations, giving pH 7.", "B", "pH 0 corresponds to a strongly acidic idealised solution.", "C", "pH 14 corresponds to a strongly basic idealised solution.", "D", "pH 1 is acidic."],
+["Chemistry", "A strong acid is diluted with water. What happens to its pH?", "A", "Its pH increases toward 7", "B", "Its pH decreases toward 0", "C", "Its pH must remain exactly unchanged", "D", "Its pH becomes negative in every case", "A", "Dilution lowers the hydrogen-ion concentration, so an acidic pH moves upward toward neutral.", "B", "Moving toward 0 would mean becoming more acidic, not dilution.", "C", "Dilution changes hydrogen-ion concentration.", "D", "Negative pH is possible for extremely concentrated acids but is not the universal result of dilution."],
+["Chemistry", "Which particle is the conjugate base of H₂CO₃?", "A", "HCO₃⁻", "B", "CO₃²⁻", "C", "H₃O⁺", "D", "OH⁻", "A", "Removing one proton from H₂CO₃ gives HCO₃⁻.", "B", "CO₃²⁻ is formed after removal of two protons.", "C", "H₃O⁺ is an acid species.", "D", "OH⁻ is not the conjugate base of carbonic acid."],
+["Chemistry", "Which technique is most appropriate for separating two liquids with significantly different boiling points?", "A", "Simple distillation", "B", "Filtration", "C", "Decantation of an insoluble solid", "D", "Chromatography on paper", "A", "Distillation separates liquids based on differences in boiling points.", "B", "Filtration separates solids from fluids rather than two miscible liquids.", "C", "Decantation is not the normal method for miscible liquids.", "D", "Paper chromatography is mainly used to separate dissolved substances based on partition/adsorption."],
+
+["Physics", "A car accelerates from rest at 3 m s⁻² for 4 s. What is its final speed?", "A", "12 m s⁻¹", "B", "7 m s⁻¹", "C", "1.33 m s⁻¹", "D", "48 m s⁻¹", "A", "Using v = u + at, v = 0 + 3×4 = 12 m s⁻¹.", "B", "7 is obtained from adding 3 and 4, which is not the kinematic relation.", "C", "1.33 m s⁻¹ comes from dividing 4 by 3.", "D", "48 m s⁻¹ is the product of 3 and 16, not the final velocity here."],
+["Physics", "A ball is thrown vertically upward. At the highest point of its motion, ignoring air resistance:", "A", "Its velocity is zero but its acceleration is downward", "B", "Its velocity and acceleration are both zero", "C", "Its velocity is maximum upward", "D", "Its acceleration is upward", "A", "At the top, instantaneous velocity is zero while gravitational acceleration remains downward.", "B", "Gravity continues to accelerate the ball downward.", "C", "The upward velocity has reduced to zero.", "D", "The acceleration due to gravity remains downward."],
+["Physics", "Which quantity is a vector?", "A", "Velocity", "B", "Speed", "C", "Mass", "D", "Temperature", "A", "Velocity has both magnitude and direction, making it a vector.", "B", "Speed has magnitude only and is scalar.", "C", "Mass is scalar.", "D", "Temperature is scalar."],
+["Physics", "A 2 kg object experiences a net force of 10 N. What is its acceleration?", "A", "5 m s⁻²", "B", "20 m s⁻²", "C", "0.2 m s⁻²", "D", "12 m s⁻²", "A", "Newton's second law gives a = F/m = 10/2 = 5 m s⁻².", "B", "20 is obtained by multiplying rather than dividing force by mass.", "C", "0.2 is the reciprocal of the correct numerical result.", "D", "Adding force and mass is not Newton's second law."],
+["Physics", "Which statement best describes momentum?", "A", "It is the product of mass and velocity", "B", "It is the product of force and time only", "C", "It is equal to kinetic energy for all objects", "D", "It is always zero for moving objects", "A", "Momentum is defined as p = mv.", "B", "Force multiplied by time gives impulse, which equals change in momentum.", "C", "Momentum and kinetic energy are different physical quantities.", "D", "A moving object can have non-zero momentum."],
+["Physics", "A force of 20 N acts on an object through a distance of 5 m in the same direction as the force. What work is done?", "A", "100 J", "B", "4 J", "C", "25 J", "D", "0 J", "A", "Work = Fd cosθ; with θ = 0°, W = 20×5 = 100 J.", "B", "4 is the result of 20/5, not the work.", "C", "25 is not obtained from the work formula.", "D", "Work is not zero because force and displacement are in the same direction."],
+["Physics", "Which equation relates kinetic energy to mass and speed?", "A", "KE = ½mv²", "B", "KE = mv", "C", "KE = ma", "D", "KE = mgh", "A", "Kinetic energy is one-half mass times speed squared.", "B", "mv is momentum.", "C", "ma is force.", "D", "mgh is gravitational potential energy near Earth's surface."],
+["Physics", "An ideal transformer has 200 turns in the primary coil and 1000 turns in the secondary coil. If the primary voltage is 20 V, what is the secondary voltage?", "A", "100 V", "B", "4 V", "C", "20 V", "D", "200 V", "A", "For an ideal transformer, Vs/Vp = Ns/Np = 1000/200 = 5, so Vs = 100 V.", "B", "4 V corresponds to reversing the turns ratio.", "C", "The voltage changes because the turns ratio is not 1.", "D", "200 V is ten times the primary rather than five times."],
+["Physics", "What happens to the resistance of a typical metal wire as its temperature increases?", "A", "It generally increases", "B", "It always becomes zero", "C", "It always decreases", "D", "It becomes infinite immediately", "A", "In typical metals, increased temperature increases lattice vibrations and resistance.", "B", "Resistance does not generally become zero.", "C", "The usual metallic trend is the opposite.", "D", "Resistance does not become infinite immediately with ordinary heating."],
+["Physics", "Two resistors of 6 Ω and 3 Ω are connected in parallel. What is their equivalent resistance?", "A", "2 Ω", "B", "9 Ω", "C", "18 Ω", "D", "3 Ω", "A", "For parallel resistors, 1/R = 1/6 + 1/3 = 1/2, so R = 2 Ω.", "B", "9 Ω is their series resistance.", "C", "Parallel resistance is less than the smallest individual resistance.", "D", "The equivalent is less than 3 Ω, so 3 Ω cannot be correct."],
+  ["English", "Which spelling is correct?", "A", "Electroencephalographically", "B", "Electroencephalographikally", "C", "Electroencephalograffically", "D", "Electroencefalographically", "A", "Electroencephalographically is the standard spelling.", "B", "The adverbial ending is not spelled with k in this word.", "C", "The consonant sequence is altered incorrectly.", "D", "The encephalo sequence is misspelled."],
+["English", "Choose the correctly spelled word.", "A", "Disproportionately", "B", "Disproportionaly", "C", "Disproporrtionately", "D", "Disproportianately", "A", "Disproportionately is correctly spelled.", "B", "The adverbial ending requires the full -ately sequence.", "C", "The word has an extra r.", "D", "The vowel sequence in proportion is altered."],
+["English", "Which spelling is correct?", "A", "Indistinguishability", "B", "Indistinguishibility", "C", "Indistinquishability", "D", "Indistinguishabilty", "A", "Indistinguishability is correctly spelled.", "B", "The suffix is altered from the standard -ability form.", "C", "The gu sequence is incorrectly changed.", "D", "The final syllable is missing a required i."],
+["English", "Choose the correctly spelled word.", "A", "Conscientiousness", "B", "Conscienciousness", "C", "Conscientousness", "D", "Conscientiousnes", "A", "Conscientiousness is correctly spelled.", "B", "The sequence after conscien is incorrect.", "C", "The standard spelling retains the full -tious sequence.", "D", "The final double s is required."],
+["English", "Which spelling is correct?", "A", "Entrepreneurship", "B", "Enterpreneurship", "C", "Entreprenuership", "D", "Entrepreneuship", "A", "Entrepreneurship is correctly spelled.", "B", "The second syllable is incorrectly written as enter- rather than entre-.", "C", "The vowel order in entrepreneur is altered.", "D", "The final consonant sequence is incorrect."],
+["English", "Choose the correctly spelled word.", "A", "Bureaucratically", "B", "Beaurocratically", "C", "Bureaucraticaly", "D", "Bureacratically", "A", "Bureaucratically is correctly spelled.", "B", "The opening vowel sequence of bureau is incorrect.", "C", "The adverbial ending needs the full -ally spelling.", "D", "The bureau sequence is missing a vowel."]
+];
+
+let qs = [];
+let answers = [];
+let index = 0;
+let startTime = 0;
+let done = false;
+let lastResult = null;
+let sessionId = null;
+let currentUser = null;
+let attemptId = null;
+let adminUser = null;
+let monInterval = null;
+
+
+/* ---------- SUPABASE ---------- */
+
+async function getUser(){
+  const {data,error} = await supabase.auth.getUser();
+
+  if(error){
+    console.error(error);
+    return null;
+  }
+
+  return data?.user || null;
+}
+
+
+async function ensureCandidateAuth(){
+
+  const existing = await getUser();
+
+  if(existing){
+    currentUser = existing;
+    return existing;
+  }
+
+  const {data,error} =
+    await supabase.auth.signInAnonymously();
+
+  if(error){
+    console.error("Anonymous sign-in failed:",error);
+    throw error;
+  }
+
+  currentUser = data.user;
+
+  return currentUser;
+}
+
+
+/* ---------- QUIZ HELPERS ---------- */
+
+function processQuestion(row){
+
+  return {
+    subject:row[0],
+    q:row[1],
+
+    options:[
+      row[3],
+      row[5],
+      row[7],
+      row[9]
+    ],
+
+    answer:
+      ["A","B","C","D"].indexOf(row[10]),
+
+    explanations:{
+      A:row[11],
+      B:row[13],
+      C:row[15],
+      D:row[17]
+    }
+  };
+}
+
+
+function saveLocalState(){
+
+  const state = {
+    answers,
+    index,
+    startTime,
+    attemptId
+  };
+
+  localStorage.setItem(
+    "invictus_quiz_state",
+    JSON.stringify(state)
+  );
+}
+
+
+function loadLocalState(){
+
+  try{
+
+    const rawState =
+      localStorage.getItem(
+        "invictus_quiz_state"
+      );
+
+    if(!rawState) return null;
+
+    return JSON.parse(rawState);
+
+  }catch(e){
+
+    console.error(e);
+
+    return null;
+  }
+}
+
+
+/* ---------- START ---------- */
+
+async function begin(){
+
+  const name =
+    document
+      .getElementById("candidate")
+      .value
+      .trim();
+
+  if(!name){
+
+    alert("Please enter your name.");
+
+    return;
+  }
+
+
+  try{
+
+    await ensureCandidateAuth();
+
+  }catch(error){
+
+    alert(
+      "Could not connect to the quiz server.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  qs =
+    shuffle(
+      raw.map(processQuestion)
+    );
+
+
+  answers =
+    new Array(qs.length).fill(null);
+
+  index = 0;
+  startTime = Date.now();
+  done = false;
+
+
+  const {data,error} =
+    await supabase
+      .from("attempts")
+      .insert({
+
+        user_id:currentUser.id,
+
+        candidate_name:name,
+
+        status:"in-progress",
+
+        start_time:
+          new Date(startTime).toISOString(),
+
+        current_index:0,
+
+        total_questions:qs.length,
+
+        answered_count:0,
+
+        subject:qs[0]?.subject || null,
+
+        last_update:
+          new Date().toISOString()
+
+      })
+      .select()
+      .single();
+
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "Could not create the quiz attempt.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  attemptId = data.id;
+
+  sessionId = attemptId;
+
+  saveLocalState();
+
+
+  document
+    .getElementById("start")
+    .classList.add("hidden");
+
+  document
+    .getElementById("quiz")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("leaderboard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("result")
+    .classList.add("hidden");
+
+  document
+    .getElementById("admin")
+    .classList.add("hidden");
+
+
+  showQuestion();
+
+  startTimer();
+}
+
+
+/* ---------- QUESTION DISPLAY ---------- */
+
+function showQuestion(){
+
+  if(!qs.length) return;
+
+
+  const item = qs[index];
+
+
+  document.getElementById("subject")
+    .textContent = item.subject;
+
+
+  document.getElementById("counter")
+    .textContent =
+      `${index+1} / ${qs.length}`;
+
+
+  document.getElementById("qnum")
+    .textContent =
+      `QUESTION ${String(index+1).padStart(3,"0")}`;
+
+
+  document.getElementById("question")
+    .textContent = item.q;
+
+
+  const options =
+    document.getElementById("options");
+
+  options.innerHTML = "";
+
+
+  item.options.forEach((text,i)=>{
+
+    const el =
+      document.createElement("div");
+
+    el.className = "opt";
+
+
+    if(answers[index] === i){
+
+      el.classList.add("selected");
+    }
+
+
+    el.innerHTML =
+      `<span class="letter">
+        ${String.fromCharCode(65+i)}
+       </span>
+       <span>${escapeHtml(text)}</span>`;
+
+
+    el.onclick = ()=>{
+
+      answers[index] = i;
+
+      document
+        .querySelectorAll(".opt")
+        .forEach(x =>
+          x.classList.remove("selected")
+        );
+
+      el.classList.add("selected");
+
+      saveProgress();
+    };
+
+
+    options.appendChild(el);
+  });
+
+
+  document.getElementById("prog")
+    .style.width =
+      `${((index+1)/qs.length)*100}%`;
+
+
+  document.getElementById("prev")
+    .disabled = index === 0;
+
+
+  document.getElementById("next")
+    .textContent =
+      index === qs.length-1
+        ? "FINISH ⚡"
+        : "Next →";
+}
+
+
+/* ---------- ESCAPE HTML ---------- */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* ---------- NAVIGATION ---------- */
+
+function previous(){
+
+  if(index <= 0) return;
+
+  index--;
+
+  showQuestion();
+
+  saveProgress();
+}
+
+
+async function next(){
+
+  if(answers[index] === null){
+
+    alert("Choose an answer first.");
+
+    return;
+  }
+
+
+  if(index < qs.length-1){
+
+    index++;
+
+    showQuestion();
+
+    await saveProgress();
+
+  }else{
+
+    await finishQuiz();
+  }
+}
+
+
+/* ---------- SAVE PROGRESS ---------- */
+
+async function saveProgress(){
+
+  saveLocalState();
+
+
+  if(!attemptId || !currentUser || done){
+    return;
+  }
+
+
+  const answeredCount =
+    answers.filter(
+      x => x !== null
+    ).length;
+
+
+  const {error} =
+    await supabase
+      .from("attempts")
+      .update({
+
+        current_index:index,
+
+        total_questions:qs.length,
+
+        answered_count:answeredCount,
+
+        subject:
+          qs[index]?.subject || null,
+
+        last_update:
+          new Date().toISOString()
+
+      })
+      .eq("id",attemptId)
+      .eq("user_id",currentUser.id);
+
+
+  if(error){
+
+    console.error(
+      "Progress save error:",
+      error
+    );
+  }
+}
+
+
+/* ---------- TIMER ---------- */
+
+function startTimer(){
+
+  setInterval(()=>{
+
+    if(!startTime) return;
+
+    const elapsed =
+      Math.floor(
+        (Date.now()-startTime)/1000
+      );
+
+
+    const minutes =
+      String(
+        Math.floor(elapsed/60)
+      ).padStart(2,"0");
+
+
+    const seconds =
+      String(
+        elapsed%60
+      ).padStart(2,"0");
+
+
+    document.getElementById("timer")
+      .textContent =
+        `${minutes}:${seconds}`;
+
+  },1000);
+  }
+  /* ---------- FINISH QUIZ ---------- */
+
+async function finishQuiz(){
+
+  done = true;
+
+  const elapsed =
+    Math.floor(
+      (Date.now()-startTime)/1000
+    );
+
+
+  let total = 0;
+
+  const subjectScores = {};
+
+
+  qs.forEach((item,i)=>{
+
+    if(!subjectScores[item.subject]){
+
+      subjectScores[item.subject] = {
+        correct:0,
+        total:0
+      };
+    }
+
+
+    subjectScores[item.subject].total++;
+
+
+    if(answers[i] === item.answer){
+
+      total++;
+
+      subjectScores[item.subject].correct++;
+    }
+  });
+
+
+  const percent =
+    Math.round(
+      total / qs.length * 100
+    );
+
+
+  lastResult = {
+    total,
+    percent,
+    elapsed,
+    subjectScores
+  };
+
+
+  if(attemptId && currentUser){
+
+    const {error} =
+      await supabase
+        .from("attempts")
+        .update({
+
+          status:"completed",
+
+          completed_at:
+            new Date().toISOString(),
+
+          total_score:total,
+
+          total_questions:qs.length,
+
+          answered_count:
+            answers.filter(
+              x => x !== null
+            ).length,
+
+          elapsed_seconds:elapsed,
+
+          subject_scores:subjectScores,
+
+          last_update:
+            new Date().toISOString()
+
+        })
+        .eq("id",attemptId)
+        .eq("user_id",currentUser.id);
+
+
+    if(error){
+
+      console.error(
+        "Final score save error:",
+        error
+      );
+
+      alert(
+        "Your result was calculated, but there was a problem saving it online."
+      );
+    }
+  }
+
+
+  localStorage.removeItem(
+    "invictus_quiz_state"
+  );
+
+
+  showResult();
+}
+
+
+/* ---------- RESULT SCREEN ---------- */
+
+function showResult(){
+
+  document
+    .getElementById("quiz")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("result")
+    .classList.remove("hidden");
+
+
+  const name =
+    document
+      .getElementById("candidate")
+      .value
+      .trim();
+
+
+  document.getElementById("resultName")
+    .textContent =
+      `Candidate: ${name}`;
+
+
+  document.getElementById("bigScore")
+    .textContent =
+      `${lastResult.percent}%`;
+
+
+  document.getElementById("resultSummary")
+    .textContent =
+      `You scored ${lastResult.total} / ${qs.length}.`;
+
+
+  const chart =
+    document.getElementById("chart");
+
+  chart.innerHTML = "";
+
+
+  Object.entries(
+    lastResult.subjectScores
+  ).forEach(([subject,data])=>{
+
+    const percentage =
+      Math.round(
+        data.correct /
+        data.total *
+        100
+      );
+
+
+    const row =
+      document.createElement("div");
+
+    row.className = "barRow";
+
+
+    row.innerHTML =
+      `<span>${escapeHtml(subject)}</span>
+
+       <div class="bar">
+         <span style="--w:${percentage}%"></span>
+       </div>
+
+       <b>${percentage}%</b>`;
+
+
+    chart.appendChild(row);
+  });
+}
+
+
+/* ---------- LEADERBOARD ---------- */
+
+async function showLeaderboard(){
+
+  document
+    .getElementById("start")
+    .classList.add("hidden");
+
+  document
+    .getElementById("quiz")
+    .classList.add("hidden");
+
+  document
+    .getElementById("result")
+    .classList.add("hidden");
+
+  document
+    .getElementById("admin")
+    .classList.add("hidden");
+
+  document
+    .getElementById("leaderboard")
+    .classList.remove("hidden");
+
+
+  await loadLeaderboard();
+}
+
+
+async function loadLeaderboard(){
+
+  const table =
+    document.getElementById("lbTable");
+
+
+  table.innerHTML =
+    `<div class="lbEmpty">
+      Loading leaderboard...
+     </div>`;
+
+
+  const {data,error} =
+    await supabase
+      .from("attempts")
+      .select(
+        "id,candidate_name,total_score,total_questions,completed_at"
+      )
+      .eq("status","completed")
+      .order(
+        "total_score",
+        {ascending:false}
+      )
+      .order(
+        "completed_at",
+        {ascending:true}
+      )
+      .limit(100);
+
+
+  if(error){
+
+    console.error(error);
+
+    table.innerHTML =
+      `<div class="lbEmpty">
+        Could not load leaderboard.
+       </div>`;
+
+    return;
+  }
+
+
+  if(!data?.length){
+
+    table.innerHTML =
+      `<div class="lbEmpty">
+        No completed attempts yet.
+       </div>`;
+
+    return;
+  }
+
+
+  table.innerHTML = "";
+
+
+  data.forEach((row,i)=>{
+
+    const percent =
+      row.total_questions
+        ? Math.round(
+            row.total_score /
+            row.total_questions *
+            100
+          )
+        : 0;
+
+
+    const div =
+      document.createElement("div");
+
+    div.className = "lbRow";
+
+
+    if(
+      attemptId &&
+      row.id === attemptId
+    ){
+
+      div.classList.add("me");
+    }
+
+
+    const date =
+      row.completed_at
+        ? new Date(
+            row.completed_at
+          ).toLocaleString()
+        : "";
+
+
+    div.innerHTML =
+      `<div class="lbRank">
+        #${i+1}
+       </div>
+
+       <div class="lbName">
+         ${escapeHtml(
+           row.candidate_name
+         )}
+
+         <span class="lbDate">
+           ${escapeHtml(date)}
+         </span>
+       </div>
+
+       <div class="lbPct">
+         ${percent}%
+       </div>
+
+       <div class="lbScore">
+         ${row.total_score}/${row.total_questions}
+       </div>`;
+
+
+    table.appendChild(div);
+  });
+}
+
+
+/* ---------- RETURN HOME ---------- */
+
+function backToStart(){
+
+  document
+    .getElementById("quiz")
+    .classList.add("hidden");
+
+  document
+    .getElementById("result")
+    .classList.add("hidden");
+
+  document
+    .getElementById("leaderboard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("admin")
+    .classList.add("hidden");
+
+  document
+    .getElementById("start")
+    .classList.remove("hidden");
+
+
+  document.getElementById("candidate")
+    .value = "";
+
+
+  qs = [];
+
+  answers = [];
+
+  index = 0;
+
+  startTime = 0;
+
+  attemptId = null;
+
+  sessionId = null;
+
+  lastResult = null;
+
+  done = false;
+}
+
+
+/* ---------- ADMIN ---------- */
+
+async function adminLogin(){
+
+  const email =
+    document
+      .getElementById("adminEmail")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("adminPassword")
+      .value;
+
+
+  if(!email || !password){
+
+    alert(
+      "Enter your admin email and password."
+    );
+
+    return;
+  }
+
+
+  const {data,error} =
+    await supabase.auth
+      .signInWithPassword({
+
+        email,
+
+        password
+
+      });
+
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "Admin login failed.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  adminUser = data.user;
+
+
+  const role =
+    adminUser
+      ?.app_metadata
+      ?.role;
+
+
+  if(role !== "admin"){
+
+    await supabase.auth.signOut();
+
+    adminUser = null;
+
+    alert(
+      "This account does not have admin access."
+    );
+
+    return;
+  }
+
+
+  document
+    .getElementById("adminLogin")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("adminPanel")
+    .classList.remove("hidden");
+
+
+  await loadAdminData();
+
+
+  clearInterval(monInterval);
+
+  monInterval =
+    setInterval(
+      loadAdminData,
+      10000
+    );
+}
+
+
+/* ---------- ADMIN DATA ---------- */
+
+async function loadAdminData(){
+
+  await loadMonitor();
+
+  await loadAdminLeaderboard();
+}
+
+
+async function loadMonitor(){
+
+  const monitor =
+    document.getElementById("monitor");
+
+
+  monitor.innerHTML =
+    `<div class="lbEmpty">
+      Loading live candidates...
+     </div>`;
+
+
+  const {data,error} =
+    await supabase
+      .from("attempts")
+      .select("*")
+      .order(
+        "last_update",
+        {ascending:false}
+      )
+      .limit(100);
+
+
+  if(error){
+
+    console.error(error);
+
+    monitor.innerHTML =
+      `<div class="lbEmpty">
+        Could not load live monitor.
+       </div>`;
+
+    return;
+  }
+
+
+  if(!data?.length){
+
+    monitor.innerHTML =
+      `<div class="lbEmpty">
+        No candidates yet.
+       </div>`;
+
+    return;
+  }
+
+
+  monitor.innerHTML = "";
+
+
+  data.forEach(row=>{
+
+    const answered =
+      row.answered_count || 0;
+
+
+    const total =
+      row.total_questions || 0;
+
+
+    const percentage =
+      total
+        ? Math.round(
+            answered /
+            total *
+            100
+          )
+        : 0;
+
+
+    const lastUpdate =
+      row.last_update
+        ? new Date(
+            row.last_update
+          )
+        : null;
+
+
+    const age =
+      lastUpdate
+        ? Math
+      .floor(
+  (
+    Date.now() -
+    lastUpdate.getTime()
+  ) / 1000
+)
+: 999;
+
+let status =
+  row.status === "completed"
+    ? "completed"
+    : age > 60
+      ? "idle"
+      : "live";
+
+const div =
+  document.createElement("div");
+
+div.className =
+  `monRow ${status}`;
+
+div.innerHTML =
+  `<div>
+    <div class="monName">
+      ${escapeHtml(row.candidate_name)}
+    </div>
+
+    <div class="monMeta">
+      ${answered}/${total} answered
+      ${row.subject
+        ? " • " + escapeHtml(row.subject)
+        : ""}
+    </div>
+
+    <div class="monBar">
+      <span style="width:${percentage}%"></span>
+    </div>
+  </div>
+
+  <div class="monBadge ${status}">
+    ${status.toUpperCase()}
+  </div>`;
+
+monitor.appendChild(div);
+  });
+}
+
+
+/* ---------- ADMIN LEADERBOARD ---------- */
+
+async function loadAdminLeaderboard(){
+
+  const table =
+    document.getElementById(
+      "adminLeaderboard"
+    );
+
+  const {data,error} =
+    await supabase
+      .from("attempts")
+      .select(
+        "id,candidate_name,total_score,total_questions,completed_at"
+      )
+      .eq("status","completed")
+      .order(
+        "total_score",
+        {ascending:false}
+      )
+      .limit(100);
+
+  if(error){
+
+    console.error(error);
+
+    table.innerHTML =
+      `<div class="lbEmpty">
+        Could not load leaderboard.
+      </div>`;
+
+    return;
+  }
+
+  table.innerHTML = "";
+
+  if(!data?.length){
+
+    table.innerHTML =
+      `<div class="lbEmpty">
+        No completed attempts yet.
+      </div>`;
+
+    return;
+  }
+
+  data.forEach((row,i)=>{
+
+    const percentage =
+      row.total_questions
+        ? Math.round(
+            row.total_score /
+            row.total_questions *
+            100
+          )
+        : 0;
+
+    const div =
+      document.createElement("div");
+
+    div.className = "lbRow";
+
+    div.innerHTML =
+      `<div class="lbRank">
+        #${i+1}
+      </div>
+
+      <div class="lbName">
+        ${escapeHtml(row.candidate_name)}
+      </div>
+
+      <div class="lbPct">
+        ${percentage}%
+      </div>
+
+      <div class="lbScore">
+        ${row.total_score}/${row.total_questions}
+      </div>`;
+
+    table.appendChild(div);
+  });
+}
+
+
+/* ---------- ADMIN LOGOUT ---------- */
+
+async function adminLogout(){
+
+  clearInterval(monInterval);
+
+  await supabase.auth.signOut();
+
+  adminUser = null;
+
+  document
+    .getElementById("adminPanel")
+    .classList.add("hidden");
+
+  document
+    .getElementById("adminLogin")
+    .classList.remove("hidden");
+}
+
+
+/* ---------- ADMIN SCREEN ---------- */
+
+function showAdmin(){
+
+  document
+    .getElementById("start")
+    .classList.add("hidden");
+
+  document
+    .getElementById("quiz")
+    .classList.add("hidden");
+
+  document
+    .getElementById("result")
+    .classList.add("hidden");
+
+  document
+    .getElementById("leaderboard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("admin")
+    .classList.remove("hidden");
+}
+
+
+/* ---------- SHUFFLE ---------- */
+
+function shuffle(array){
+
+  const result = [...array];
+
+  for(
+    let i = result.length - 1;
+    i > 0;
+    i--
+  ){
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      result[i],
+      result[j]
+    ] =
+    [
+      result[j],
+      result[i]
+    ];
+  }
+
+  return result;
+}
+
+
+/* ---------- STARTUP ---------- */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    console.log(
+      "INVICTUS loaded."
+    );
+
+  }
+);
